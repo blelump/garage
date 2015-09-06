@@ -1,0 +1,5 @@
+---
+environment: production
+classes:
+    - roles::default
+    - roles::puppet_server

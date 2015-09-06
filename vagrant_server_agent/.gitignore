@@ -1,0 +1,4 @@
+.git
+.vagrant
+puppet/modules
+puppet/.bundle

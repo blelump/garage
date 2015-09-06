@@ -1,0 +1,42 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+domain = 'example.com'
+
+puppet_nodes = [
+  {:hostname => 'puppet',  :ip => '172.16.32.10', :fwdhost => 8140, :fwdguest => 8140, :ram => 512},
+  {:hostname => 'client1', :ip => '172.16.32.11'}
+]
+
+Vagrant.configure(2) do |config|
+
+  config.vm.box = "ubuntu/trusty64"
+
+  config.puppet_install.puppet_version = '3.8.2'
+  config.vm.synced_folder "puppet/hiera", "/etc/puppet/hiera"
+  config.r10k.puppet_dir = 'puppet'
+  config.r10k.puppetfile_path = 'puppet/Puppetfile'
+  config.r10k.module_path = 'puppet/modules'
+
+  config.vm.provision "puppet" do |puppet|
+    puppet.manifests_path = "puppet/manifests"
+    puppet.manifest_file  = "init.pp"
+    puppet.module_path = ['puppet/modules', 'puppet/site']
+    puppet.hiera_config_path = "puppet/hiera.yaml"
+    puppet.options="--verbose --debug"
+  end
+
+  puppet_nodes.each do |node|
+    config.vm.provider "virtualbox" do |v|
+      v.memory = node[:ram] ? node[:ram] : 256
+    end
+    config.vm.define node[:hostname] do |node_config|
+      node_config.vm.box = 'ubuntu/trusty64'
+      node_config.vm.hostname = node[:hostname] + '.' + domain
+      node_config.vm.network :private_network, ip: node[:ip]
+    end
+  end
+
+end
+
+

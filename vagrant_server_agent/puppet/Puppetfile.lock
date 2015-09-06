@@ -1,0 +1,16 @@
+FORGE
+  remote: https://forgeapi.puppetlabs.com
+  specs:
+    puppetlabs-stdlib (4.8.0)
+
+GIT
+  remote: git@github.com:solarkennedy/puppet-etcd.git
+  ref: master
+  sha: e0533682739be582a11c12f68d5415b6326d131d
+  specs:
+    KyleAnderson-etcd (0.4.2)
+      puppetlabs-stdlib (>= 3.2.0)
+
+DEPENDENCIES
+  KyleAnderson-etcd (>= 0)
+
