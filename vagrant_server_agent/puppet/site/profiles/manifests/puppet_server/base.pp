@@ -12,8 +12,6 @@ class profiles::puppet_server::base {
  
   file { 'autosign.conf':
     path    => '/etc/puppet/autosign.conf',
-    owner   => 'puppet',
-    group   => 'puppet',
     mode    => '0644',
     content => '*',
     require => Package['puppetmaster']
