@@ -6,7 +6,7 @@ class profiles::common {
 
   include profiles::firewall::setup
 
-  package {['vim','sudo', 'tree']:
+  package {['vim','sudo', 'tree', 'htop']:
     ensure => present,
   }
 }
