@@ -22,10 +22,23 @@
   sudo: yes
   service: name=ssh state=restarted
 
+- name: Install ufw
+  sudo: yes
+  apt: name=ufw
+
+- name: allow ssh through firewall
+  sudo: yes
+  ufw: proto=tcp port=22 rule=allow
+
+- name: deny incoming traffic
+  sudo: yes
+  ufw: state=enabled direction=incoming policy=deny
+
 - name: Install packages
   sudo: yes
   apt: pkg={{item}} state=latest update_cache=yes
   with_items:
+    - fail2ban
     - htop
     - vim
     - tree
