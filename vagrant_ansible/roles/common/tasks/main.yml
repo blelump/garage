@@ -13,3 +13,11 @@
     group: vagrant
     mode: 0700
     recurse: true
+
+- name: copy sshd_config
+  sudo: yes
+  copy: src=sshd_config dest=/etc/ssh owner=root group=root mode=0622 backup=yes
+
+- name: restart ssh
+  sudo: yes
+  service: name=ssh state=restarted
