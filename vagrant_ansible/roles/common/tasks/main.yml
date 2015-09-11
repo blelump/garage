@@ -1,0 +1,15 @@
+---
+- name: Creates destination directory
+  file: state=directory mode=0700 dest=/home/vagrant/.ssh/
+
+- name: add host public key to authorized_keys
+  authorized_key: user=vagrant state=present key="{{ lookup('file', '~/.ssh/id_rsa.pub') }}"
+
+- name: set perms of .ssh
+  sudo: yes
+  file:
+    path: /home/vagrant/.ssh
+    owner: vagrant
+    group: vagrant
+    mode: 0700
+    recurse: true
