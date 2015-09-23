@@ -1,0 +1,21 @@
+{% set domain = item.name %}
+; {{ ansible_managed }}
+{% block head %}
+$TTL 4h
+$ORIGIN {{ domain }}.
+@           IN  SOA     ns1.os.env.    root.os.env. (
+                {{ serial }}    ; serial
+                4h      ; refresh (4 hours)
+                1h      ; retry (4 hours)
+                2w      ; expire (2 weeks)
+                1h      ; minimum (1 hour)
+                )
+{% endblock %}
+
+{% block ns %}
+            IN  NS      ns1.os.env.
+{% endblock %}
+
+{% block records %}
+ns1.os.env.     IN  A       1.2.3.4
+{% endblock %}

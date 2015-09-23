@@ -1,2 +1,4 @@
 .git
 .vagrant
+roles/ansible-role-bind/
+masters/

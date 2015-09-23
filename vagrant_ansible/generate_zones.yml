@@ -1,0 +1,13 @@
+---
+# file: generate_zones.yml
+- name: generating the master zones
+  hosts: localhost
+  gather_facts: yes
+  tasks:
+  - name: create directories
+    file: dest=masters/ state=directory
+
+  - name: generate zones from template
+    local_action: template src=files/dns/templates/db.{{ item.name }} dest=masters/
+    with_items:
+      - name: os.env

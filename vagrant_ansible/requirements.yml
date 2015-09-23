@@ -1,0 +1,4 @@
+---
+# Install a role from GitHub
+- name: ansible-role-bind
+  src: https://github.com/resmo/ansible-role-bind.git
