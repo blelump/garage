@@ -30,6 +30,11 @@
   sudo: yes
   ufw: proto=tcp port=22 rule=allow
 
+- name: allow dns through firewall
+  sudo: yes
+  ufw: proto=tcp port=53 rule=allow
+  ufw: proto=udp port=53 rule=allow
+
 - name: deny incoming traffic
   sudo: yes
   ufw: state=enabled direction=incoming policy=deny
