@@ -1,0 +1,4 @@
+---
+
+dns_searchs: ["localdomain", "ns1.os.env"]
+dns_nameservers: ['172.16.33.10', '8.8.8.8', '8.8.4.4']

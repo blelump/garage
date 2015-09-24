@@ -4,3 +4,7 @@
   src: https://github.com/resmo/ansible-role-bind.git
   path : roles/external
 
+- name: ansible-role-dns
+  src: https://github.com/jdauphant/ansible-role-dns.git
+  path : roles/external
+

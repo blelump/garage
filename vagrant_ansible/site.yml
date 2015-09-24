@@ -5,6 +5,7 @@
     - init
   roles:
     - common
+    - { role: ansible-role-dns, sudo: yes }
 
 - hosts: dns 
   tags:
