@@ -1,0 +1,5 @@
+---
+- name: Fetch kitchen-ansible repository
+  git: repo=https://github.com/neillturner/kitchen-ansible dest=~/kitchen-ansible force=yes
+
+
