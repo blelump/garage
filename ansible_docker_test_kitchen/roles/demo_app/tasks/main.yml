@@ -2,4 +2,10 @@
 - name: Fetch kitchen-ansible repository
   git: repo=https://github.com/neillturner/kitchen-ansible dest=~/kitchen-ansible force=yes
 
+- name: Install bundler gem
+  gem: name=bundler user_install=no
+  sudo: yes
+
+- name: Customize .kitchen.yml and Gemfile
+  copy: src=./ dest=~/kitchen-ansible/integration_test/
 
