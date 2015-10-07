@@ -1,0 +1,21 @@
+---
+
+- name: Install python-software-properties
+  apt: name=python-software-properties state=present
+
+- name: Add ppa repository brightbox/ruby-ng
+  apt_repository: repo='ppa:brightbox/ruby-ng'
+
+- name: Install Ruby 2.1
+  apt: name=ruby2.1 update_cache=yes
+
+- name: Install test-kitchen gem
+  gem: name={{item}} state=present user_install=no
+  with_items:
+    - test-kitchen
+    - kitchen-ansible
+    - kitchen-docker
+
+- name: Ensure net-ssh gem=2.9.2
+  gem: name=net-ssh version=2.9.2 state=present user_install=no
+

@@ -6,4 +6,5 @@
   roles:
     - common
     - {sudo: True, role: 'docker.ubuntu'}
+    - {sudo: True, role: 'test_kitchen', tags: ['testkitchen']}
 
