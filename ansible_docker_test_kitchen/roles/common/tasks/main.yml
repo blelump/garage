@@ -1,0 +1,52 @@
+---
+- name: Creates destination directory
+  file: state=directory mode=0700 dest=/home/vagrant/.ssh/
+
+- name: add host public key to authorized_keys
+  authorized_key: user=vagrant state=present key="{{ lookup('file', '~/.ssh/id_rsa.pub') }}"
+
+- name: set perms of .ssh
+  sudo: yes
+  file:
+    path: /home/vagrant/.ssh
+    owner: vagrant
+    group: vagrant
+    mode: 0700
+    recurse: true
+
+- name: copy sshd_config
+  sudo: yes
+  copy: src=sshd_config dest=/etc/ssh owner=root group=root mode=0622 backup=yes
+  register: sshd_config
+
+- name: restart ssh
+  sudo: yes
+  service: name=ssh state=restarted
+  when: sshd_config.changed
+
+- name: Install ufw
+  sudo: yes
+  apt: name=ufw
+
+- name: allow ssh through firewall
+  sudo: yes
+  ufw: proto=tcp port=22 rule=allow
+
+- name: allow dns through firewall
+  sudo: yes
+  ufw: proto=tcp port=53 rule=allow
+  ufw: proto=udp port=53 rule=allow
+
+- name: deny incoming traffic
+  sudo: yes
+  ufw: state=enabled direction=incoming policy=deny
+
+- name: Install packages
+  sudo: yes
+  apt: pkg={{item}} state=latest update_cache=yes
+  with_items:
+    - fail2ban
+    - htop
+    - vim
+    - tree
+    - git

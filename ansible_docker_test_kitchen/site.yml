@@ -1,0 +1,9 @@
+---
+
+- hosts: targets
+  tags:
+    - init
+  roles:
+    - common
+    - {sudo: True, role: 'docker.ubuntu'}
+

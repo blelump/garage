@@ -1,0 +1,9 @@
+source 'https://rubygems.org'
+
+gem "vagrant", "~> 1.7.4", git: "git@github.com:mitchellh/vagrant.git"
+
+group :plugins do
+  gem "puppet"
+  gem "vagrant-puppet-install"
+  gem "vagrant-r10k"
+end
