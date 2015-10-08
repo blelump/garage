@@ -7,5 +7,47 @@
   sudo: yes
 
 - name: Customize .kitchen.yml and Gemfile
-  copy: src=./ dest=~/kitchen-ansible/integration_test/
+  copy: src={{item}} dest={{work_dir}}
+  with_items:
+    - Gemfile
+    - Gemfile.lock
+    - .kitchen.yml
+
+- name: Ensure all dependencies are installed
+  command: bundle install --deployment
+  args:
+    chdir: "{{work_dir}}"
+
+- name: Copy Dockerfile source
+  copy: src={{item}} dest={{work_dir}}
+  with_items:
+    - env.dockerfile
+
+- name: Prepare executables
+  copy: src={{item}} dest={{work_dir}} mode="u+rwx,g+rw"
+  with_items:
+    - dockerizer.sh
+
+- name: Prepare Dockerfile
+  command: ./dockerizer.sh chdir={{work_dir}}
+
+- name: Generate SSH key pair
+  command: ssh-keygen -b 4096 -t rsa -f .kitchen/docker_id_rsa  -q -N ""
+  args:
+    chdir: "{{work_dir}}"
+    creates: .kitchen/docker_id_rsa
+
+- name: Build Docker image
+  command: sudo docker build -t env:latest ./ chdir={{work_dir}}
+
+- name: Prepare Dockerfile for test env
+  copy: src={{item}} dest=~/Dockerfile
+  with_items:
+    - base.dockerfile
+
+- name: Run test app
+  command: sudo bundle exec kitchen test chdir={{work_dir}}
+  register: test_app
+
+- debug: var=test_app.stdout_lines
 
